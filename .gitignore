@@ -1,0 +1,15 @@
+__pycache__/
+migrations/
+textskeyboards/
+env/
+media/
+.env
+db.sqlite3
+*.log
+*.save
+*.zip
+logs/
+*.DS_Store
+*.jpg
+*.db
+chromedriver
