@@ -19,7 +19,7 @@ load_dotenv(dotenv_path)
 # pp = pprint.PrettyPrinter(indent=4)
 TOKEN = os.getenv("TOKEN")
 
-locale.setlocale(locale.LC_TIME, 'uk_UA.UTF-8')
+# locale.setlocale(locale.LC_TIME, 'uk_UA.UTF-8')
 PET, PHONE, MENU, ANSWER_MENU = range(4)
 
 
