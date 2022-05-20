@@ -39,10 +39,10 @@ def greetings_handler(update: Update, context: CallbackContext):
 
 def phone_handler(update: Update, context: CallbackContext):
     if update.message.text == "Так":
-        text = "Для підтвердження Вашого аккаунту вкажіть, будь ласка, номер телефону або поділіться контактом."
+        text = "Для підтвердження Вашого акаунту вкажіть, будь ласка, номер телефону або поділіться контактом."
         context.user_data['Source'] = update.message.text
     elif update.message.text == "Ні":
-        text = "Раді знайомству, вкажіть будь ласка, номер телефону або поділіться контактом для створення вашого аккаунту."
+        text = "Раді знайомству, вкажіть будь ласка, номер телефону або поділіться контактом для створення вашого акаунту."
         context.user_data['Source'] = update.message.text
     else:
         text = "Невірний формат номеру, будь ласка, вкажіть номеру у форматі 0730008023 або поділіться контактом."
@@ -69,7 +69,7 @@ def pet_handler(update: Update, context: CallbackContext):
     if phone:
         if context.user_data['Source'] == 'Так':
             context.bot.send_message(chat_id=update.message.from_user.id,
-                                     text="Аккаунт знайдено, раді зустрічі знову.")
+                                     text="Акаунт знайдено, раді зустрічі знову.")
         if context.user_data['Source'] == 'Ні':
             context.bot.send_message(chat_id=update.message.from_user.id,
                                      text="Зареєстрували ✔️")
