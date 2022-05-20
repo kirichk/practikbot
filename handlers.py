@@ -24,6 +24,9 @@ PET, PHONE, MENU, ANSWER_MENU = range(4)
 
 
 def greetings_handler(update: Update, context: CallbackContext):
+    context.bot.send_message(chat_id=update.message.from_user.id,
+                             text="Вітаю у чат-боті українського виробника їжі для собак та котів PRACTIK!")
+    time.sleep(0.5)
     contact_keyboard = [KeyboardButton("Так"),
                         KeyboardButton("Ні"), ]
     reply_markup = ReplyKeyboardMarkup(keyboard=[contact_keyboard],
@@ -69,10 +72,10 @@ def pet_handler(update: Update, context: CallbackContext):
                                      text="Аккаунт знайдено, раді зустрічі знову.")
         if context.user_data['Source'] == 'Ні':
             context.bot.send_message(chat_id=update.message.from_user.id,
-                                     text="Зареєстрували.")
-        contact_keyboard = [[KeyboardButton("Собака"),
-                             KeyboardButton("Котик")],
-                            [KeyboardButton("Собака та котик")]]
+                                     text="Зареєстрували ✔️")
+        contact_keyboard = [[KeyboardButton("Собака 🐕"),
+                             KeyboardButton("Котик 🐈")],
+                            [KeyboardButton("Собака та котик 🐾")]]
         reply_markup = ReplyKeyboardMarkup(keyboard=contact_keyboard,
                                            resize_keyboard=True)
         context.bot.send_message(chat_id=update.message.from_user.id,
@@ -98,9 +101,9 @@ def menu_handler(update: Update, context: CallbackContext):
 
 def menu_answer_handler(update: Update, context: CallbackContext):
     if update.message.text == "Назад":
-        contact_keyboard = [[KeyboardButton("Собака"),
-                             KeyboardButton("Котик")],
-                            [KeyboardButton("Собака та котик")]]
+        contact_keyboard = [[KeyboardButton("Собака 🐕"),
+                             KeyboardButton("Котик 🐈")],
+                            [KeyboardButton("Собака та котик 🐾")]]
         reply_markup = ReplyKeyboardMarkup(keyboard=contact_keyboard,
                                            resize_keyboard=True)
         context.bot.send_message(chat_id=update.message.from_user.id,
@@ -115,3 +118,7 @@ def menu_answer_handler(update: Update, context: CallbackContext):
                                  text="Перейдіть будь ласка за посиланням.",
                                  reply_markup=inline_buttons)
         return MENU
+    else:
+        context.bot.send_message(chat_id=update.message.from_user.id,
+                                 text="Дякуємо за звернення! Будь ласка зачекайте, співробітник компанії підключиться до чату в найближчий час.")
+        return ANSWER_MENU
