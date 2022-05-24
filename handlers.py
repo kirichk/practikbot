@@ -98,6 +98,9 @@ def pet_handler(update: Update, context: CallbackContext):
 
 @logger.catch
 def menu_handler(update: Update, context: CallbackContext):
+    if update.message.text == "/start":
+        greetings_handler(update, context)
+        return PHONE
     contact_keyboard = [[KeyboardButton("Створити замовлення")],
                         [KeyboardButton("ЄПитання")],
                         [KeyboardButton(
