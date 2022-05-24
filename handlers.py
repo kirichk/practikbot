@@ -12,6 +12,7 @@ from datetime import date, datetime, timedelta
 from telegram import (InlineKeyboardButton, InlineKeyboardMarkup, Update,
                       ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButton)
 from telegram.ext import CallbackContext, ConversationHandler
+from loguru import logger
 
 
 dotenv_path = os.path.join(Path(__file__).parent.parent, 'config/.env')
@@ -19,10 +20,19 @@ load_dotenv(dotenv_path)
 # pp = pprint.PrettyPrinter(indent=4)
 TOKEN = os.getenv("TOKEN")
 
+logger.add(
+    "logs/info.log",
+    format="{time} {level} {message}",
+    level="DEBUG",
+    rotation="100 MB",
+    compression="zip",
+)
+
 # locale.setlocale(locale.LC_TIME, 'uk_UA.UTF-8')
 PET, PHONE, MENU, ANSWER_MENU = range(4)
 
 
+@logger.catch
 def greetings_handler(update: Update, context: CallbackContext):
     context.bot.send_message(chat_id=update.message.from_user.id,
                              text="Вітаю у чат-боті українського виробника їжі для собак та котів PRACTIK!")
@@ -37,6 +47,7 @@ def greetings_handler(update: Update, context: CallbackContext):
     return PHONE
 
 
+@logger.catch
 def phone_handler(update: Update, context: CallbackContext):
     if update.message.text == "Так":
         text = "Для підтвердження Вашого акаунту вкажіть, будь ласка, номер телефону або поділіться контактом."
@@ -56,6 +67,7 @@ def phone_handler(update: Update, context: CallbackContext):
     return PET
 
 
+@logger.catch
 def pet_handler(update: Update, context: CallbackContext):
     try:
         phone = update.message.contact.phone_number
@@ -84,6 +96,7 @@ def pet_handler(update: Update, context: CallbackContext):
         return MENU
 
 
+@logger.catch
 def menu_handler(update: Update, context: CallbackContext):
     contact_keyboard = [[KeyboardButton("Створити замовлення")],
                         [KeyboardButton("ЄПитання")],
@@ -99,6 +112,7 @@ def menu_handler(update: Update, context: CallbackContext):
     return ANSWER_MENU
 
 
+@logger.catch
 def menu_answer_handler(update: Update, context: CallbackContext):
     if update.message.text == "Назад":
         contact_keyboard = [[KeyboardButton("Собака 🐕"),
@@ -110,6 +124,8 @@ def menu_answer_handler(update: Update, context: CallbackContext):
                                  text="Хто Ваш улюбленець?",
                                  reply_markup=reply_markup)
         return MENU
+    if update.message.text == "/start":
+        greetings_handler(update, context)
     if update.message.text == "Перейти на сайт":
         inline_keyboard = [InlineKeyboardButton(
             text='Посилання', url='https://practik.ua/')],
