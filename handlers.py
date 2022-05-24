@@ -126,6 +126,7 @@ def menu_answer_handler(update: Update, context: CallbackContext):
         return MENU
     if update.message.text == "/start":
         greetings_handler(update, context)
+        return PHONE
     if update.message.text == "Перейти на сайт":
         inline_keyboard = [InlineKeyboardButton(
             text='Посилання', url='https://practik.ua/')],
