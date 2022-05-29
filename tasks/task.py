@@ -41,7 +41,7 @@ def task_checker():
             tasks = task_list()
             logger.info(tasks)
             for item in tasks:
-                if int(item[1]) == 2:
+                if int(item[1]) == 1440:
                     send_message_to_user(item[0])
                     delete_task(item[0])
                 else:
@@ -49,4 +49,4 @@ def task_checker():
         except Exception as e:
             logger.warning(e)
         finally:
-            time.sleep(10)
+            time.sleep(60)
