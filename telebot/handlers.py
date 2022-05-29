@@ -12,6 +12,7 @@ from datetime import date, datetime, timedelta
 from telegram import (InlineKeyboardButton, InlineKeyboardMarkup, Update,
                       ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButton)
 from telegram.ext import CallbackContext, ConversationHandler
+from db_func import database as db
 from loguru import logger
 
 
@@ -79,6 +80,9 @@ def pet_handler(update: Update, context: CallbackContext):
         else:
             phone_handler(update, context)
     if phone:
+        context.user_data['PHONE'] = phone
+        db.add_user(context.user_data['PHONE'],
+                    update.message.from_user.id)
         if context.user_data['Source'] == 'Так':
             context.bot.send_message(chat_id=update.message.from_user.id,
                                      text="Акаунт знайдено, раді зустрічі знову.")
@@ -112,11 +116,13 @@ def menu_handler(update: Update, context: CallbackContext):
     context.bot.send_message(chat_id=update.message.from_user.id,
                              text="Супер, чим можем бути корисні?",
                              reply_markup=reply_markup)
+    db.add_task(update.message.from_user.id)
     return ANSWER_MENU
 
 
 @logger.catch
 def menu_answer_handler(update: Update, context: CallbackContext):
+    db.delete_task(update.message.from_user.id)
     if update.message.text == "Назад":
         contact_keyboard = [[KeyboardButton("Собака 🐕"),
                              KeyboardButton("Котик 🐈")],
