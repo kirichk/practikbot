@@ -144,6 +144,18 @@ def menu_answer_handler(update: Update, context: CallbackContext):
                                  text="Перейдіть будь ласка за посиланням.",
                                  reply_markup=inline_buttons)
         return MENU
+    if update.message.text == 'Створити замовлення':
+        context.bot.send_message(chat_id=update.message.from_user.id,
+                                 text="Дякуємо за звернення, менеджер вже приєднується до чату. Що саме бажаєте замовити?")
+        return ANSWER_MENU
+    if update.message.text == 'ЄПитання':
+        context.bot.send_message(chat_id=update.message.from_user.id,
+                                 text="Дякуємо за звернення, менеджер вже приєднується до чату. Напишіть, будь-ласка, питання.")
+        return ANSWER_MENU
+    if update.message.text == 'Потрібна консультація експерта з харчування':
+        context.bot.send_message(chat_id=update.message.from_user.id,
+                                 text="Дякуємо за звернення, поки менеджер приєднується до чату напишіть, будь-ласка, для кого бажаєте підібрати корм?")
+        return ANSWER_MENU
     else:
         context.bot.send_message(chat_id=update.message.from_user.id,
                                  text="Дякуємо за звернення! Будь ласка зачекайте, співробітник компанії підключиться до чату в найближчий час.")

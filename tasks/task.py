@@ -30,7 +30,7 @@ def send_message_to_user(user_id):
     reply_markup = ReplyKeyboardMarkup(keyboard=contact_keyboard,
                                        resize_keyboard=True)
     bot.send_message(chat_id=user_id,
-                     text="Як Ваші справи?",
+                     text="Вітаємо! Як нам відомо улюбленець сам себе не нагодує) Продовжимо вибір харчування?",
                      reply_markup=reply_markup)
 
 
