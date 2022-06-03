@@ -56,6 +56,8 @@ def main():
             CallbackQueryHandler(greetings_handler,
                                  pattern=r'^start$',
                                  pass_user_data=True),
+            MessageHandler(Filters.all, menu_handler,
+                           pass_user_data=True),
         ],
         states={
             PHONE: [MessageHandler(Filters.all, phone_handler,
