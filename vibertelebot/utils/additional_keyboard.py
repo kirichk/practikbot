@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import date, datetime, timedelta
-from vibertelebot.textskeyboards import viberkeyboards as kb
+# from vibertelebot.textskeyboards import viberkeyboards as kb
 
 dotenv_path = os.path.join(Path(__file__).parent.parent, 'config/.env')
 load_dotenv(dotenv_path)
