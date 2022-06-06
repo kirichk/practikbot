@@ -1,6 +1,6 @@
 from flask import Flask, request, Response, json, jsonify
 from multiprocessing import Process
-from viberbot import main as vbbot
+from vibertelebot import main as vbbot
 from db_func.database import create_table
 from loguru import logger
 from tasks.task import task_checker
@@ -18,7 +18,7 @@ def viber_endpoint():
 
 
 def server_launch():
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8000)
 
 
 if __name__ == '__main__':

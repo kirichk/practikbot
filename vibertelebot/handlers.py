@@ -11,8 +11,7 @@ from dotenv import load_dotenv
 from loguru import logger
 from multiprocessing import Process
 from datetime import date, datetime, timedelta
-from textskeyboards import texts as resources
-from textskeyboards import viberkeyboards as kb
+from vibertelebot.textskeyboards import viberkeyboards as kb
 from vibertelebot.utils.tools import keyboard_consctructor
 from viberbot.api.messages.text_message import TextMessage
 from viberbot.api.messages.contact_message import ContactMessage
@@ -50,6 +49,7 @@ def user_message_handler(viber, viber_request):
     # Data for RichMediaMessage
     reply_alt_text = ''
     reply_rich_media = {}
+    tracking_data = json.loads(tracking_data)
     if isinstance(message, ContactMessage):
         # Handling reply after user shared his contact infromation
         if message.contact.name:
@@ -57,14 +57,15 @@ def user_message_handler(viber, viber_request):
         tracking_data['PHONE'] = message.contact.phone_number
         db.add_user(message.contact.phone_number,
                     message.contact.name)
-        tracking_data = json.dumps(tracking_data)
         if tracking_data['STATUS'] == 'yes':
+            tracking_data = json.dumps(tracking_data)
             reply_text = 'Акаунт знайдено, раді зустрічі знову.'
             reply = [TextMessage(text=reply_text,
                                  tracking_data=tracking_data,
                                  min_api_version=6)]
             viber.send_messages(chat_id, reply)
         else:
+            tracking_data = json.dumps(tracking_data)
             reply_text = 'Зареєстрували ✔️'
             reply = [TextMessage(text=reply_text,
                                  tracking_data=tracking_data,
@@ -73,6 +74,7 @@ def user_message_handler(viber, viber_request):
         time.sleep(0.5)
         reply_text = "Хто Ваш улюбленець?"
         reply_keyboard = kb.pet_keyboard
+        tracking_data = json.dumps(tracking_data)
         logger.info(tracking_data)
         reply = [TextMessage(text=reply_text,
                              keyboard=reply_keyboard,
@@ -81,30 +83,31 @@ def user_message_handler(viber, viber_request):
         viber.send_messages(chat_id, reply)
     else:
         text = viber_request.message.text
+        logger.info(text)
         if text == 'yes':
             reply_text = "Для підтвердження Вашого акаунту вкажіть, будь ласка, номер телефону або поділіться контактом."
             reply_keyboard = addkb.SHARE_PHONE_KEYBOARD
-            tracking_data['STATUS'] = text
-        if text == 'no':
+            tracking_data['STATUS'] = 'yes'
+        elif text == 'no':
             reply_text = "Раді знайомству, вкажіть будь ласка, номер телефону або поділіться контактом для створення вашого акаунту."
             reply_keyboard = addkb.SHARE_PHONE_KEYBOARD
-            tracking_data['STATUS'] = text
-        if text[:3] == 'pet':
+            tracking_data['STATUS'] = 'no'
+        elif text[:3] == 'pet':
             reply_text = "Супер, чим можем бути корисні?"
             reply_keyboard = kb.menu_keyboard
-        if text == 'order':
+        elif text == 'order':
             reply_text = "Дякуємо за звернення, менеджер вже приєднується до чату. Що саме бажаєте замовити?"
             reply_keyboard = kb.menu_keyboard
-        if text == 'question':
+        elif text == 'question':
             reply_text = "Дякуємо за звернення, менеджер вже приєднується до чату. Напишіть, будь-ласка, питання."
             reply_keyboard = kb.menu_keyboard
-        if text == 'consult':
+        elif text == 'consult':
             reply_text = "Дякуємо за звернення, поки менеджер приєднується до чату напишіть, будь-ласка, для кого бажаєте підібрати корм?"
             reply_keyboard = kb.menu_keyboard
-        if text == 'website':
+        elif text == 'website':
             reply_text = "Дякуємо за звернення, вітаємо у сімʼїбренду здорового та корисного харчування practik.ua"
             reply_keyboard = kb.menu_keyboard
-        if text == 'back':
+        elif text == 'back':
             reply_text = "Хто Ваш улюбленець?"
             reply_keyboard = kb.pet_keyboard
         else:
