@@ -141,8 +141,7 @@ def menu_answer_handler(update: Update, context: CallbackContext):
             text='Посилання', url='https://practik.ua/')],
         inline_buttons = InlineKeyboardMarkup(inline_keyboard=inline_keyboard)
         context.bot.send_message(chat_id=update.message.from_user.id,
-                                 text="Перейдіть будь ласка за посиланням.",
-                                 reply_markup=inline_buttons)
+                                 text="Дякуємо за звернення, вітаємо у сімʼїбренду здорового та корисного харчування practik.ua")
         return MENU
     if update.message.text == 'Створити замовлення':
         context.bot.send_message(chat_id=update.message.from_user.id,
