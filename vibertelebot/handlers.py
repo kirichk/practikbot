@@ -111,12 +111,13 @@ def user_message_handler(viber, viber_request):
             reply_text = "Хто Ваш улюбленець?"
             reply_keyboard = kb.pet_keyboard
         else:
-            reply_text = "Дякуємо за звернення, поки менеджер приєднується до чату напишіть, будь-ласка, для кого бажаєте підібрати корм?"
-            reply_keyboard = kb.menu_keyboard
+            reply_text = ''
+            reply_keyboard = {}
         logger.info(tracking_data)
-        tracking_data = json.dumps(tracking_data)
-        reply = [TextMessage(text=reply_text,
-                             keyboard=reply_keyboard,
-                             tracking_data=tracking_data,
-                             min_api_version=6)]
-        viber.send_messages(chat_id, reply)
+        if reply_text:
+            tracking_data = json.dumps(tracking_data)
+            reply = [TextMessage(text=reply_text,
+                                 keyboard=reply_keyboard,
+                                 tracking_data=tracking_data,
+                                 min_api_version=6)]
+            viber.send_messages(chat_id, reply)
