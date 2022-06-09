@@ -1,6 +1,6 @@
 from vibertelebot.utils.tools import keyboard_consctructor
 
-LOGO = 'https://images.prom.ua/1630650539_w640_h640_practik-ukrainian.jpg'
+LOGO = 'https://i.ibb.co/cYmSk9g/Instagram.jpg'
 
 menu_keyboard = keyboard_consctructor([
             ('Створити замовлення', 'order', ''),
