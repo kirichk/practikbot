@@ -51,7 +51,7 @@ def greetings_handler(update: Update, context: CallbackContext):
 
 @logger.catch
 def phone_handler(update: Update, context: CallbackContext):
-    send_message_telegram(update)
+    send_message_telegram(update, context.bot)
     if update.message.text == "Так":
         text = "Для підтвердження Вашого акаунту вкажіть, будь ласка, номер телефону або поділіться контактом."
         context.user_data['Source'] = update.message.text
@@ -72,7 +72,7 @@ def phone_handler(update: Update, context: CallbackContext):
 
 @logger.catch
 def pet_handler(update: Update, context: CallbackContext):
-    send_message_telegram(update)
+    send_message_telegram(update, context.bot)
     try:
         phone = update.message.contact.phone_number
     except:
@@ -105,7 +105,7 @@ def pet_handler(update: Update, context: CallbackContext):
 
 @logger.catch
 def menu_handler(update: Update, context: CallbackContext):
-    send_message_telegram(update)
+    send_message_telegram(update, context.bot)
     if update.message.text == "/start":
         greetings_handler(update, context)
         return PHONE
