@@ -38,7 +38,7 @@ def send_message_telegram(data):
         "tab_id": "1"
         }
     x = requests.post(URL,
-                      body=data,
+                      data=data,
                       headers=hed)
     logger.info(x.json())
 
