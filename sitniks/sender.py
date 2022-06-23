@@ -1,4 +1,5 @@
 import os
+import json
 from pathlib import Path
 import requests
 from dotenv import load_dotenv
@@ -38,7 +39,7 @@ def send_message_telegram(data, bot):
         "company_id": "480",
         "tab_id": "1"
         }
-    pure_data = Update.de_json(data, bot)
+    pure_data = json.loads(data)
     x = requests.post(URL,
                       json=pure_data,
                       headers=hed)
