@@ -14,6 +14,7 @@ from telegram import (InlineKeyboardButton, InlineKeyboardMarkup, Update,
 from telegram.ext import CallbackContext, ConversationHandler
 from db_func import database as db
 from loguru import logger
+from sitniks.sender import send_message_telegram
 
 
 dotenv_path = os.path.join(Path(__file__).parent.parent, 'config/.env')
@@ -50,6 +51,7 @@ def greetings_handler(update: Update, context: CallbackContext):
 
 @logger.catch
 def phone_handler(update: Update, context: CallbackContext):
+    send_message_telegram(update)
     if update.message.text == "Так":
         text = "Для підтвердження Вашого акаунту вкажіть, будь ласка, номер телефону або поділіться контактом."
         context.user_data['Source'] = update.message.text
