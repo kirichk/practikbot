@@ -3,6 +3,7 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 from loguru import logger
+from telegram import Update
 
 
 dotenv_path = os.path.join(Path(__file__).parent.parent, 'config/.env')
@@ -37,8 +38,9 @@ def send_message_telegram(data, bot):
         "company_id": "480",
         "tab_id": "1"
         }
+    pure_data = Update.de_json(data, bot)
     x = requests.post(URL,
-                      json=data.de_json(data, bot),
+                      json=pure_data,
                       headers=hed)
     logger.info(x.json())
 
