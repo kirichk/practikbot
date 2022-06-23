@@ -29,7 +29,7 @@ TELEGRAM_BOT_ID = os.getenv("TELEGRAM_BOT_ID")
 
 
 @logger.catch
-def send_message_telegram(data):
+def send_message_telegram(data, bot):
     URL = 'https://compound.sitniks.com/webhooks/telegram/<botId>'
     auth_token = os.getenv("SITNIKS_TOKEN")
     hed = {'content-type': 'application/json'}
@@ -38,7 +38,7 @@ def send_message_telegram(data):
         "tab_id": "1"
         }
     x = requests.post(URL,
-                      json=data.de_json(),
+                      json=data.de_json(data, bot),
                       headers=hed)
     logger.info(x.json())
 

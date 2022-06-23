@@ -126,7 +126,7 @@ def menu_handler(update: Update, context: CallbackContext):
 
 @logger.catch
 def menu_answer_handler(update: Update, context: CallbackContext):
-    send_message_telegram(update)
+    send_message_telegram(update, context.bot)
     db.delete_task(update.message.from_user.id)
     if update.message.text == "Назад":
         contact_keyboard = [[KeyboardButton("Собака 🐕"),
