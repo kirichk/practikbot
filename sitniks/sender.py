@@ -44,7 +44,7 @@ def send_message_telegram(data):
     x = requests.post(URL,
                       json=json_data,
                       headers=hed)
-    logger.info(x.json())
+    logger.info(x.text)
 
 
 # if __name__ == '__main__':
