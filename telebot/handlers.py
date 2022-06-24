@@ -1,5 +1,6 @@
 import os
 import time
+import ast
 import requests
 import locale
 import json
@@ -36,6 +37,13 @@ PET, PHONE, MENU, ANSWER_MENU = range(4)
 
 @logger.catch
 def greetings_handler(update: Update, context: CallbackContext):
+    # logger.info(update)
+    # json_data = str(update)
+    # convertedDict = ast.literal_eval(json_data)
+    # logger.info(type(convertedDict))
+    # logger.info(convertedDict)
+    # new_json_data = json.loads(json_acceptable_string)
+    # logger.info(new_json_data)
     context.bot.send_message(chat_id=update.message.from_user.id,
                              text="Вітаю у чат-боті українського виробника їжі для собак та котів PRACTIK!")
     time.sleep(0.5)

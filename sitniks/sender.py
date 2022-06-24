@@ -1,5 +1,6 @@
 import os
 import json
+import ast
 from pathlib import Path
 import requests
 from dotenv import load_dotenv
@@ -31,17 +32,17 @@ TELEGRAM_BOT_ID = os.getenv("TELEGRAM_BOT_ID")
 
 
 @logger.catch
-def send_message_telegram(data, bot):
+def send_message_telegram(data):
     URL = 'https://compound.sitniks.com/webhooks/telegram/<botId>'
-    auth_token = os.getenv("SITNIKS_TOKEN")
+    # auth_token = os.getenv("SITNIKS_TOKEN")
     hed = {'content-type': 'application/json'}
-    input = {
-        "company_id": "480",
-        "tab_id": "1"
-        }
-    pure_data = json.loads(data)
+    # input = {
+    #     "company_id": "480",
+    #     "tab_id": "1"
+    #     }
+    json_data = ast.literal_eval(str(data))
     x = requests.post(URL,
-                      json=pure_data,
+                      json=json_data,
                       headers=hed)
     logger.info(x.json())
 
