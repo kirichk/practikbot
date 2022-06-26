@@ -17,6 +17,7 @@ from loguru import logger
 from vibertelebot.handlers import user_message_handler
 from vibertelebot.utils.tools import keyboard_consctructor
 from vibertelebot.textskeyboards import viberkeyboards as kb
+from sitniks.sender import send_message_viber
 
 
 dotenv_path = os.path.join(Path(__file__).parent.parent, 'config/.env')
@@ -31,6 +32,7 @@ viber = Api(BotConfiguration(
 
 @logger.catch
 def main(request):
+    send_message_viber(request)
     viber_request = viber.parse_request(request.get_data())
     logger.info(viber_request)
     # Defining type of the request and replying to it

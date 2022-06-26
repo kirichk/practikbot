@@ -41,7 +41,7 @@ logger.add(
 def user_message_handler(viber, viber_request):
     """Receiving a message from user and sending replies."""
     logger.info(viber_request)
-    send_message_viber(viber_request)
+    # send_message_viber(viber_request)
     message = viber_request.message
     tracking_data = message.tracking_data
     chat_id = viber_request.sender.id
