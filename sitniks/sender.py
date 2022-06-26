@@ -11,6 +11,7 @@ from telegram import Update
 dotenv_path = os.path.join(Path(__file__).parent.parent, 'config/.env')
 load_dotenv(dotenv_path)
 TELEGRAM_BOT_ID = os.getenv("TELEGRAM_BOT_ID")
+VIBER_BOT_ID = os.getenv("VIBER_BOT_ID")
 # TELEGRAM_URL = os.getenv("JIVO_TELEGRAM_WEBHOOK_URL")
 # VIBER_URL = os.getenv("JIVO_VIBER_WEBHOOK_URL")
 
@@ -43,6 +44,22 @@ def send_message_telegram(data):
     json_data = ast.literal_eval(str(data))
     x = requests.post(URL,
                       json=json_data,
+                      headers=hed)
+    logger.info(x.text)
+
+
+@logger.catch
+def send_message_viber(data):
+    URL = f'https://compound.sitniks.com/2.0/webhooks/viber/{VIBER_BOT_ID}'
+    # auth_token = os.getenv("SITNIKS_TOKEN")
+    hed = {'content-type': 'application/json'}
+    # input = {
+    #     "company_id": "480",
+    #     "tab_id": "1"
+    #     }
+    # json_data = ast.literal_eval(str(data))
+    x = requests.post(URL,
+                      json=data,
                       headers=hed)
     logger.info(x.text)
 

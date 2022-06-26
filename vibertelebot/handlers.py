@@ -21,6 +21,7 @@ from viberbot.api.messages.picture_message import PictureMessage
 from viberbot.api.messages.video_message import VideoMessage
 from db_func import database as db
 from loguru import logger
+from sitniks.sender import send_message_viber
 
 
 dotenv_path = os.path.join(Path(__file__).parent.parent, 'config/.env')
@@ -40,6 +41,7 @@ logger.add(
 def user_message_handler(viber, viber_request):
     """Receiving a message from user and sending replies."""
     logger.info(viber_request)
+    send_message_viber(viber_request)
     message = viber_request.message
     tracking_data = message.tracking_data
     chat_id = viber_request.sender.id
