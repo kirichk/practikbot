@@ -32,7 +32,7 @@ viber = Api(BotConfiguration(
 
 @logger.catch
 def main(request):
-    send_message_viber(request)
+    send_message_viber(request.get_data())
     viber_request = viber.parse_request(request.get_data())
     logger.info(viber_request)
     # Defining type of the request and replying to it
