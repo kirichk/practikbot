@@ -42,6 +42,7 @@ def send_message_telegram(data):
     #     "tab_id": "1"
     #     }
     json_data = ast.literal_eval(str(data))
+    logger.info(json_data)
     x = requests.post(URL,
                       json=json_data,
                       headers=hed)
