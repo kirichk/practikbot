@@ -56,8 +56,7 @@ def main(request):
             "client failed receiving message. failure: {viber_request}")
     elif isinstance(viber_request, ViberConversationStartedRequest):
         # First touch, sending to user keyboard with phone sharing button
-        tracking_data = {'NAME': 'ViberUser', 'HISTORY': '',
-                         'CHAT_MODE': 'off', 'STAGE': 'phone', 'DEALS': []}
+        tracking_data = {'NAME': 'ViberUser', 'HISTORY': '', 'CHAT': 'no'}
         tracking_data = json.dumps(tracking_data)
         viber.send_messages(viber_request.user.id, [
             TextMessage(
