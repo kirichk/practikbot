@@ -58,9 +58,9 @@ def send_message_viber(data):
     #     "company_id": "480",
     #     "tab_id": "1"
     #     }
-    json_data = json.loads(str(data.decode('ascii')))
+    # json_data = json.loads(str(data.decode('ascii')))
     x = requests.post(URL,
-                      json=json_data,
+                      json=data,
                       headers=hed)
     logger.info(x.text)
 
