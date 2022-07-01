@@ -59,7 +59,7 @@ def user_message_handler(viber, viber_request):
             tracking_data['NAME'] = message.contact.name
         tracking_data['PHONE'] = message.contact.phone_number
         db.add_user(message.contact.phone_number,
-                    message.contact.name)
+                    chat_id)
         if tracking_data['STATUS'] == 'yes':
             tracking_data = json.dumps(tracking_data)
             reply_text = 'Акаунт знайдено, раді зустрічі знову.'
