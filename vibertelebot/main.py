@@ -73,6 +73,7 @@ def main(request):
                 TextMessage(
                     text="Чим можем бути корисні?",
                     keyboard=kb.menu_keyboard,
+                    tracking_data=tracking_data,
                     min_api_version=6)
                 ]
             )
@@ -82,6 +83,7 @@ def main(request):
                 TextMessage(
                     text="Ви вже купувала PRACTIK раніше?",
                     keyboard=kb.greeting_keyboard,
+                    tracking_data=tracking_data,
                     min_api_version=6)
                 ]
             )
