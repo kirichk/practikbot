@@ -25,8 +25,8 @@ dotenv_path = os.path.join(Path(__file__).parent.parent, 'config/.env')
 load_dotenv(dotenv_path)
 
 viber = Api(BotConfiguration(
-    name='PractikBot',
-    avatar='https://i.ibb.co/xLkPxm6/Instagram-1-1.png',
+    name='PractikBot їжа для собак та котів',
+    avatar='https://i.ibb.co/8NRy51t/Instagram-1-1-1.png',
     auth_token=os.getenv('VIBER_TOKEN')
 ))
 
