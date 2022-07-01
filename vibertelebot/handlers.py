@@ -87,6 +87,8 @@ def user_message_handler(viber, viber_request):
     else:
         text = viber_request.message.text
         logger.info(text)
+        if type(tracking_data) is str:
+            tracking_data = json.loads(tracking_data)
         if tracking_data['CHAT'] != 'yes':
             if text == 'yes':
                 reply_text = "Для підтвердження Вашого акаунту вкажіть, будь ласка, номер телефону або поділіться контактом."
