@@ -71,7 +71,7 @@ def main(request):
             time.sleep(0.5)
             viber.send_messages(viber_request.user.id, [
                 TextMessage(
-                    text="Чим можем бути корисні?",
+                    text="Чим можемо бути корисні?",
                     keyboard=kb.menu_keyboard,
                     tracking_data=tracking_data,
                     min_api_version=6)
