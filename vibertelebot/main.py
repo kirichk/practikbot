@@ -26,7 +26,7 @@ load_dotenv(dotenv_path)
 
 viber = Api(BotConfiguration(
     name='PractikBot',
-    avatar=kb.LOGO,
+    avatar='https://i.ibb.co/xLkPxm6/Instagram-1-1.png',
     auth_token=os.getenv('VIBER_TOKEN')
 ))
 
