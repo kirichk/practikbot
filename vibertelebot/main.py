@@ -66,6 +66,7 @@ def main(request):
             ]
         )
         user_data = db.check_user(viber_request.user.id)
+        logger.info(user_data)
         if user_data:
             time.sleep(0.5)
             viber.send_messages(viber_request.user.id, [
