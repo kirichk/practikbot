@@ -21,7 +21,7 @@ def keyboard_consctructor(items: list) -> dict:
             "Buttons": [{
                     "Columns": width,
                     "Rows": 1,
-                    "BgColor": MAIN_COLOR,
+                    "BgColor": '#e75740',
                     "BgLoop": True,
                     "ActionType": "reply",
                     "ActionBody": item[1],
@@ -34,7 +34,7 @@ def keyboard_consctructor(items: list) -> dict:
             {
                     "Columns": 6,
                     "Rows": 1,
-                    "BgColor": MAIN_COLOR,
+                    "BgColor": '#e75740',
                     "BgLoop": True,
                     "ActionType": "reply",
                     "ActionBody": items[-1][1],
@@ -52,7 +52,7 @@ def keyboard_consctructor(items: list) -> dict:
             "Buttons": [{
                     "Columns": width,
                     "Rows": 1,
-                    "BgColor": MAIN_COLOR,
+                    "BgColor": '#e75740',
                     "BgLoop": True,
                     "ActionType": "reply",
                     "ActionBody": item[1],
