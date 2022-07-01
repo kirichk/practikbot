@@ -18,6 +18,7 @@ from vibertelebot.handlers import user_message_handler
 from vibertelebot.utils.tools import keyboard_consctructor
 from vibertelebot.textskeyboards import viberkeyboards as kb
 from sitniks.sender import send_message_viber
+from db_func import database as db
 
 
 dotenv_path = os.path.join(Path(__file__).parent.parent, 'config/.env')
@@ -65,12 +66,22 @@ def main(request):
                 min_api_version=6)
             ]
         )
-        time.sleep(0.5)
-        viber.send_messages(viber_request.user.id, [
-            TextMessage(
-                text="Ви вже купувала PRACTIK раніше?",
-                keyboard=kb.greeting_keyboard,
-                tracking_data=tracking_data,
-                min_api_version=6)
-            ]
-        )
+        user_data = db.check_user(viber_request.user.id)
+        if user_data:
+            time.sleep(0.5)
+            viber.send_messages(viber_request.user.id, [
+                TextMessage(
+                    text="Чим можем бути корисні?",
+                    keyboard=kb.menu_keyboard,
+                    min_api_version=6)
+                ]
+            )
+        else:
+            time.sleep(0.5)
+            viber.send_messages(viber_request.user.id, [
+                TextMessage(
+                    text="Ви вже купувала PRACTIK раніше?",
+                    keyboard=kb.greeting_keyboard,
+                    min_api_version=6)
+                ]
+            )

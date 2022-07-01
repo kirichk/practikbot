@@ -157,18 +157,46 @@ def menu_answer_handler(update: Update, context: CallbackContext):
                                  text="Дякуємо за звернення, вітаємо у сімʼїбренду здорового та корисного харчування practik.ua")
         return MENU
     if update.message.text == 'Створити замовлення':
-        context.bot.send_message(chat_id=update.message.from_user.id,
+        if 'CHAT' in context.user_data:
+            if context.user_data['CHAT'] != 'yes':
+                context.bot.send_message(chat_id=update.message.from_user.id,
                                  text="Дякуємо за звернення, менеджер вже приєднується до чату. Що саме бажаєте замовити?")
+                context.user_data['CHAT'] = 'yes'
+        else:
+            context.bot.send_message(chat_id=update.message.from_user.id,
+                             text="Дякуємо за звернення, менеджер вже приєднується до чату. Що саме бажаєте замовити?")
+            context.user_data['CHAT'] = 'yes'
         return ANSWER_MENU
     if update.message.text == 'ЄПитання':
-        context.bot.send_message(chat_id=update.message.from_user.id,
+        if 'CHAT' in context.user_data:
+            if context.user_data['CHAT'] != 'yes':
+                context.bot.send_message(chat_id=update.message.from_user.id,
                                  text="Дякуємо за звернення, менеджер вже приєднується до чату. Напишіть, будь-ласка, питання.")
+                context.user_data['CHAT'] = 'yes'
+        else:
+            context.bot.send_message(chat_id=update.message.from_user.id,
+                             text="Дякуємо за звернення, менеджер вже приєднується до чату. Напишіть, будь-ласка, питання.")
+            context.user_data['CHAT'] = 'yes'
         return ANSWER_MENU
     if update.message.text == 'Потрібна консультація експерта з харчування':
-        context.bot.send_message(chat_id=update.message.from_user.id,
+        if 'CHAT' in context.user_data:
+            if context.user_data['CHAT'] != 'yes':
+                context.bot.send_message(chat_id=update.message.from_user.id,
                                  text="Дякуємо за звернення, поки менеджер приєднується до чату напишіть, будь-ласка, для кого бажаєте підібрати корм?")
+                context.user_data['CHAT'] = 'yes'
+        else:
+            context.bot.send_message(chat_id=update.message.from_user.id,
+                             text="Дякуємо за звернення, поки менеджер приєднується до чату напишіть, будь-ласка, для кого бажаєте підібрати корм?")
+            context.user_data['CHAT'] = 'yes'
         return ANSWER_MENU
     else:
-        context.bot.send_message(chat_id=update.message.from_user.id,
+        if 'CHAT' in context.user_data:
+            if context.user_data['CHAT'] != 'yes':
+                context.bot.send_message(chat_id=update.message.from_user.id,
                                  text="Дякуємо за звернення! Будь ласка зачекайте, співробітник компанії підключиться до чату в найближчий час.")
+            context.user_data['CHAT'] = 'yes'
+        else:
+            context.bot.send_message(chat_id=update.message.from_user.id,
+                             text="Дякуємо за звернення, поки менеджер приєднується до чату напишіть, будь-ласка, для кого бажаєте підібрати корм?")
+            context.user_data['CHAT'] = 'yes'
         return ANSWER_MENU

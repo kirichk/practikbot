@@ -9,6 +9,9 @@ from telegram.utils.request import Request
 from telegram import (InlineKeyboardButton, InlineKeyboardMarkup,
                       ReplyKeyboardRemove, KeyboardButton, ReplyKeyboardMarkup)
 from telegram.ext import CallbackContext, ConversationHandler
+from vibertelebot.main import viber
+from viberbot.api.messages.text_message import TextMessage
+from vibertelebot.textskeyboards import viberkeyboards as kb
 from loguru import logger
 
 
@@ -21,17 +24,22 @@ bot = Bot(token=os.getenv("TOKEN"))
 
 
 def send_message_to_user(user_id):
-    contact_keyboard = [[KeyboardButton("Створити замовлення")],
-                        [KeyboardButton("ЄПитання")],
-                        [KeyboardButton(
-                            "Потрібна консультація експерта з харчування")],
-                        [KeyboardButton("Перейти на сайт")],
-                        [KeyboardButton("Назад")]]
-    reply_markup = ReplyKeyboardMarkup(keyboard=contact_keyboard,
-                                       resize_keyboard=True)
-    bot.send_message(chat_id=user_id,
-                     text="Вітаємо! Як нам відомо улюбленець сам себе не нагодує) Продовжимо вибір харчування?",
-                     reply_markup=reply_markup)
+    try:
+        int(user_id)
+        contact_keyboard = [[KeyboardButton("Створити замовлення")],
+                            [KeyboardButton("ЄПитання")],
+                            [KeyboardButton(
+                                "Потрібна консультація експерта з харчування")],
+                            [KeyboardButton("Перейти на сайт")],
+                            [KeyboardButton("Назад")]]
+        reply_markup = ReplyKeyboardMarkup(keyboard=contact_keyboard,
+                                           resize_keyboard=True)
+        bot.send_message(chat_id=user_id,
+                         text="Вітаємо! Як нам відомо улюбленець сам себе не нагодує) Продовжимо вибір харчування?",
+                         reply_markup=reply_markup)
+    except:
+        viber.send_messages(user_id, [TextMessage(text="Вітаємо! Як нам відомо улюбленець сам себе не нагодує) Продовжимо вибір харчування?",
+                                               keyboard=kb.menu_keyboard])
 
 
 @logger.catch

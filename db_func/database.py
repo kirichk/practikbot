@@ -81,3 +81,11 @@ def delete_task(user_id):
     sql_selection = f"DELETE FROM TASKS WHERE "\
                         f"user_id = '{user_id}';"
     post_sql_query(sql_selection)
+
+
+@logger.catch
+def check_user(user_id):
+    sql_selection = f"SELECT * FROM DATA WHERE "\
+                        f"user_id = '{user_id}';"
+    rows = post_sql_query(sql_selection)
+    return rows

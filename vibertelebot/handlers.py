@@ -21,6 +21,7 @@ from viberbot.api.messages.picture_message import PictureMessage
 from viberbot.api.messages.video_message import VideoMessage
 from db_func import database as db
 from loguru import logger
+from db_func import database as db
 from sitniks.sender import send_message_viber
 
 
@@ -86,40 +87,50 @@ def user_message_handler(viber, viber_request):
     else:
         text = viber_request.message.text
         logger.info(text)
-        if text == 'yes':
-            reply_text = "Для підтвердження Вашого акаунту вкажіть, будь ласка, номер телефону або поділіться контактом."
-            reply_keyboard = addkb.SHARE_PHONE_KEYBOARD
-            tracking_data['STATUS'] = 'yes'
-        elif text == 'no':
-            reply_text = "Раді знайомству, вкажіть будь ласка, номер телефону або поділіться контактом для створення вашого акаунту."
-            reply_keyboard = addkb.SHARE_PHONE_KEYBOARD
-            tracking_data['STATUS'] = 'no'
-        elif text[:3] == 'pet':
-            reply_text = "Супер, чим можем бути корисні?"
-            reply_keyboard = kb.menu_keyboard
-        elif text == 'order':
-            reply_text = "Дякуємо за звернення, менеджер вже приєднується до чату. Що саме бажаєте замовити?"
-            reply_keyboard = kb.menu_keyboard
-        elif text == 'question':
-            reply_text = "Дякуємо за звернення, менеджер вже приєднується до чату. Напишіть, будь-ласка, питання."
-            reply_keyboard = kb.menu_keyboard
-        elif text == 'consult':
-            reply_text = "Дякуємо за звернення, поки менеджер приєднується до чату напишіть, будь-ласка, для кого бажаєте підібрати корм?"
-            reply_keyboard = kb.menu_keyboard
-        elif text == 'website':
-            reply_text = "Дякуємо за звернення, вітаємо у сімʼїбренду здорового та корисного харчування practik.ua"
-            reply_keyboard = kb.menu_keyboard
-        elif text == 'back':
-            reply_text = "Хто Ваш улюбленець?"
-            reply_keyboard = kb.pet_keyboard
-        else:
-            reply_text = ''
-            reply_keyboard = {}
-        logger.info(tracking_data)
-        if reply_text:
-            tracking_data = json.dumps(tracking_data)
-            reply = [TextMessage(text=reply_text,
-                                 keyboard=reply_keyboard,
-                                 tracking_data=tracking_data,
-                                 min_api_version=6)]
-            viber.send_messages(chat_id, reply)
+        if tracking_data['CHAT'] != 'yes':
+            if text == 'yes':
+                reply_text = "Для підтвердження Вашого акаунту вкажіть, будь ласка, номер телефону або поділіться контактом."
+                reply_keyboard = addkb.SHARE_PHONE_KEYBOARD
+                tracking_data['STATUS'] = 'yes'
+            elif text == 'no':
+                reply_text = "Раді знайомству, вкажіть будь ласка, номер телефону або поділіться контактом для створення вашого акаунту."
+                reply_keyboard = addkb.SHARE_PHONE_KEYBOARD
+                tracking_data['STATUS'] = 'no'
+            elif text[:3] == 'pet':
+                reply_text = "Супер, чим можем бути корисні?"
+                reply_keyboard = kb.menu_keyboard
+                db.add_task(chat_id)
+            elif text == 'order':
+                reply_text = "Дякуємо за звернення, менеджер вже приєднується до чату. Що саме бажаєте замовити?"
+                reply_keyboard = kb.menu_keyboard
+                tracking_data['CHAT'] = 'yes'
+                db.delete_task(chat_id)
+            elif text == 'question':
+                reply_text = "Дякуємо за звернення, менеджер вже приєднується до чату. Напишіть, будь-ласка, питання."
+                reply_keyboard = kb.menu_keyboard
+                tracking_data['CHAT'] = 'yes'
+                db.delete_task(chat_id)
+            elif text == 'consult':
+                reply_text = "Дякуємо за звернення, поки менеджер приєднується до чату напишіть, будь-ласка, для кого бажаєте підібрати корм?"
+                reply_keyboard = kb.menu_keyboard
+                tracking_data['CHAT'] = 'yes'
+                db.delete_task(chat_id)
+            elif text == 'website':
+                reply_text = "Дякуємо за звернення, вітаємо у сімʼїбренду здорового та корисного харчування practik.ua"
+                reply_keyboard = kb.menu_keyboard
+            elif text == 'back':
+                reply_text = "Хто Ваш улюбленець?"
+                reply_keyboard = kb.pet_keyboard
+            else:
+                reply_text = "Дякуємо за звернення, менеджер вже приєднується до чату. Напишіть, будь-ласка, питання."
+                reply_keyboard = kb.menu_keyboard
+                tracking_data['CHAT'] = 'yes'
+                db.delete_task(chat_id)
+            logger.info(tracking_data)
+            if reply_text:
+                tracking_data = json.dumps(tracking_data)
+                reply = [TextMessage(text=reply_text,
+                                     keyboard=reply_keyboard,
+                                     tracking_data=tracking_data,
+                                     min_api_version=6)]
+                viber.send_messages(chat_id, reply)
