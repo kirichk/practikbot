@@ -47,14 +47,30 @@ def greetings_handler(update: Update, context: CallbackContext):
     context.bot.send_message(chat_id=update.message.from_user.id,
                              text="Вітаю у чат-боті українського виробника їжі для собак та котів PRACTIK!")
     time.sleep(0.5)
-    contact_keyboard = [KeyboardButton("Так"),
-                        KeyboardButton("Ні"), ]
-    reply_markup = ReplyKeyboardMarkup(keyboard=[contact_keyboard],
-                                       resize_keyboard=True)
-    text = "Ви вже купувала PRACTIK раніше?"
-    context.bot.send_message(chat_id=update.message.from_user.id,
-                             text=text,
-                             reply_markup=reply_markup)
+    user_data = db.check_user(update.message.from_user.id)
+    logger.info(user_data)
+    if user_data:
+        contact_keyboard = [[KeyboardButton("Створити замовлення")],
+                            [KeyboardButton("ЄПитання")],
+                            [KeyboardButton(
+                                "Потрібна консультація експерта з харчування")],
+                            [KeyboardButton("Перейти на сайт")],
+                            [KeyboardButton("Назад")]]
+        reply_markup = ReplyKeyboardMarkup(keyboard=contact_keyboard,
+                                           resize_keyboard=True)
+        text = "Чим можемо бути корисні?"
+        context.bot.send_message(chat_id=update.message.from_user.id,
+                                 text=text,
+                                 reply_markup=reply_markup)
+    else:
+        contact_keyboard = [KeyboardButton("Так"),
+                            KeyboardButton("Ні"), ]
+        reply_markup = ReplyKeyboardMarkup(keyboard=[contact_keyboard],
+                                           resize_keyboard=True)
+        text = "Ви вже купувала PRACTIK раніше?"
+        context.bot.send_message(chat_id=update.message.from_user.id,
+                                 text=text,
+                                 reply_markup=reply_markup)
     context.user_data['QUESTION'] = text
     return PHONE
 
