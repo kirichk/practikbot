@@ -39,7 +39,7 @@ def send_message_to_user(user_id):
                          reply_markup=reply_markup)
     except:
         viber.send_messages(user_id, [TextMessage(text="Вітаємо! Як нам відомо улюбленець сам себе не нагодує) Продовжимо вибір харчування?",
-                                               keyboard=kb.menu_keyboard])
+                                                  keyboard=kb.menu_keyboard)])
 
 
 @logger.catch
