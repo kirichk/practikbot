@@ -18,7 +18,7 @@ SHARE_PHONE_KEYBOARD = {
         {
             "Columns": 6,
             "Rows": 1,
-            "BgColor": MAIN_COLOR,
+            "BgColor": '#e75740',
             "BgLoop": True,
             "ActionType": "share-phone",
             "ActionBody": 'phone_reply',
