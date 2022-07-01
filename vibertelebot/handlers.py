@@ -77,6 +77,8 @@ def user_message_handler(viber, viber_request):
         time.sleep(0.5)
         reply_text = "Хто Ваш улюбленець?"
         reply_keyboard = kb.pet_keyboard
+        tracking_data = json.loads(tracking_data)
+        tracking_data['QUESTION'] = reply_text
         tracking_data = json.dumps(tracking_data)
         logger.info(tracking_data)
         reply = [TextMessage(text=reply_text,
@@ -128,6 +130,7 @@ def user_message_handler(viber, viber_request):
                 reply_keyboard = kb.menu_keyboard
                 tracking_data['CHAT'] = 'yes'
                 db.delete_task(chat_id)
+            tracking_data['QUESTION'] = reply_text
             logger.info(tracking_data)
             if reply_text:
                 tracking_data = json.dumps(tracking_data)

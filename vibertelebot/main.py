@@ -40,6 +40,12 @@ def main(request):
     if 'message' in json_data:
         if json_data['message']['text'] in button_list:
             json_data['message']['text'] = kb.button_dict[json_data['message']['text']]
+        if 'tracking_data' in json_data['message']:
+            previous_data = json.loads(json_data['message']['tracking_data'])
+            logger.info(type(previous_data))
+            logger.info(previous_data)
+            if 'QUESTION' in previous_data:
+                json_data['message']['text'] = f"{previous_data['QUESTION']}\n\n{json_data['message']['text']}"
     logger.info(json_data)
     # logger.info(viber_request.message)
     send_message_viber(json_data)
@@ -56,7 +62,8 @@ def main(request):
             "client failed receiving message. failure: {viber_request}")
     elif isinstance(viber_request, ViberConversationStartedRequest):
         # First touch, sending to user keyboard with phone sharing button
-        tracking_data = {'NAME': 'ViberUser', 'HISTORY': '', 'CHAT': 'no'}
+        tracking_data = {'NAME': 'ViberUser', 'HISTORY': '', 'CHAT': 'no',
+                         'QUESTION': ''}
         tracking_data = json.dumps(tracking_data)
         viber.send_messages(viber_request.user.id, [
             TextMessage(
@@ -69,6 +76,9 @@ def main(request):
         logger.info(user_data)
         if user_data:
             time.sleep(0.5)
+            tracking_data = {'NAME': 'ViberUser', 'HISTORY': '', 'CHAT': 'no',
+                             'QUESTION': 'Чим можемо бути корисні?'}
+            tracking_data = json.dumps(tracking_data)
             viber.send_messages(viber_request.user.id, [
                 TextMessage(
                     text="Чим можемо бути корисні?",
@@ -79,6 +89,9 @@ def main(request):
             )
         else:
             time.sleep(0.5)
+            tracking_data = {'NAME': 'ViberUser', 'HISTORY': '', 'CHAT': 'no',
+                             'QUESTION': 'Ви вже купувала PRACTIK раніше?'}
+            tracking_data = json.dumps(tracking_data)
             viber.send_messages(viber_request.user.id, [
                 TextMessage(
                     text="Ви вже купувала PRACTIK раніше?",
