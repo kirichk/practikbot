@@ -33,7 +33,7 @@ VIBER_BOT_ID = os.getenv("VIBER_BOT_ID")
 
 
 @logger.catch
-def send_message_telegram(data):
+def send_message_telegram(data, context):
     URL = f'https://compound.sitniks.com/2.0/webhooks/telegram/{TELEGRAM_BOT_ID}'
     # auth_token = os.getenv("SITNIKS_TOKEN")
     hed = {'content-type': 'application/json'}
@@ -42,6 +42,9 @@ def send_message_telegram(data):
     #     "tab_id": "1"
     #     }
     json_data = ast.literal_eval(str(data))
+    if 'QUESTION' in context.user_data:
+        if context.user_data['QUESTION']:
+            json_data['message']['text'] = f"БОТ: {context.user_data['QUESTION']}\n\n{json_data['message']['text']}"
     logger.info(json_data)
     x = requests.post(URL,
                       json=json_data,

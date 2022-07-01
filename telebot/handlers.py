@@ -51,15 +51,17 @@ def greetings_handler(update: Update, context: CallbackContext):
                         KeyboardButton("Ні"), ]
     reply_markup = ReplyKeyboardMarkup(keyboard=[contact_keyboard],
                                        resize_keyboard=True)
+    text = "Ви вже купувала PRACTIK раніше?"
     context.bot.send_message(chat_id=update.message.from_user.id,
-                             text="Ви вже купувала PRACTIK раніше?",
+                             text=text,
                              reply_markup=reply_markup)
+    context.user_data['QUESTION'] = text
     return PHONE
 
 
 @logger.catch
 def phone_handler(update: Update, context: CallbackContext):
-    send_message_telegram(update)
+    send_message_telegram(update, context)
     if update.message.text == "Так":
         text = "Для підтвердження Вашого акаунту вкажіть, будь ласка, номер телефону або поділіться контактом."
         context.user_data['Source'] = update.message.text
@@ -75,12 +77,13 @@ def phone_handler(update: Update, context: CallbackContext):
     context.bot.send_message(chat_id=update.message.from_user.id,
                              text=text,
                              reply_markup=reply_markup)
+    context.user_data['QUESTION'] = text
     return PET
 
 
 @logger.catch
 def pet_handler(update: Update, context: CallbackContext):
-    send_message_telegram(update)
+    send_message_telegram(update, context)
     try:
         phone = update.message.contact.phone_number
     except:
@@ -95,25 +98,29 @@ def pet_handler(update: Update, context: CallbackContext):
         db.add_user(context.user_data['PHONE'],
                     update.message.from_user.id)
         if context.user_data['Source'] == 'Так':
+            text = "Акаунт знайдено, раді зустрічі знову."
             context.bot.send_message(chat_id=update.message.from_user.id,
-                                     text="Акаунт знайдено, раді зустрічі знову.")
+                                     text=text)
         if context.user_data['Source'] == 'Ні':
+            text = "Зареєстрували ✔️"
             context.bot.send_message(chat_id=update.message.from_user.id,
-                                     text="Зареєстрували ✔️")
+                                     text=text)
         contact_keyboard = [[KeyboardButton("Собака 🐕"),
                              KeyboardButton("Котик 🐈")],
                             [KeyboardButton("Собака та котик 🐾")]]
         reply_markup = ReplyKeyboardMarkup(keyboard=contact_keyboard,
                                            resize_keyboard=True)
+        text = "Хто Ваш улюбленець?"
         context.bot.send_message(chat_id=update.message.from_user.id,
-                                 text="Хто Ваш улюбленець?",
+                                 text=text,
                                  reply_markup=reply_markup)
+        context.user_data['QUESTION'] = text
         return MENU
 
 
 @logger.catch
 def menu_handler(update: Update, context: CallbackContext):
-    send_message_telegram(update)
+    send_message_telegram(update, context)
     if update.message.text == "/start":
         greetings_handler(update, context)
         return PHONE
@@ -125,16 +132,18 @@ def menu_handler(update: Update, context: CallbackContext):
                         [KeyboardButton("Назад")]]
     reply_markup = ReplyKeyboardMarkup(keyboard=contact_keyboard,
                                        resize_keyboard=True)
+    text = "Супер, чим можем бути корисні?"
     context.bot.send_message(chat_id=update.message.from_user.id,
-                             text="Супер, чим можем бути корисні?",
+                             text=text,
                              reply_markup=reply_markup)
     db.add_task(update.message.from_user.id)
+    context.user_data['QUESTION'] = text
     return ANSWER_MENU
 
 
 @logger.catch
 def menu_answer_handler(update: Update, context: CallbackContext):
-    send_message_telegram(update)
+    send_message_telegram(update, context)
     db.delete_task(update.message.from_user.id)
     if update.message.text == "Назад":
         contact_keyboard = [[KeyboardButton("Собака 🐕"),
@@ -142,9 +151,11 @@ def menu_answer_handler(update: Update, context: CallbackContext):
                             [KeyboardButton("Собака та котик 🐾")]]
         reply_markup = ReplyKeyboardMarkup(keyboard=contact_keyboard,
                                            resize_keyboard=True)
+        text = "Хто Ваш улюбленець?"
         context.bot.send_message(chat_id=update.message.from_user.id,
-                                 text="Хто Ваш улюбленець?",
+                                 text=text,
                                  reply_markup=reply_markup)
+        context.user_data['QUESTION'] = text
         return MENU
     if update.message.text == "/start":
         greetings_handler(update, context)
@@ -157,46 +168,66 @@ def menu_answer_handler(update: Update, context: CallbackContext):
                                  text="Дякуємо за звернення, вітаємо у сімʼїбренду здорового та корисного харчування practik.ua")
         return MENU
     if update.message.text == 'Створити замовлення':
+        text = "Дякуємо за звернення, менеджер вже приєднується до чату. Що саме бажаєте замовити?"
         if 'CHAT' in context.user_data:
             if context.user_data['CHAT'] != 'yes':
                 context.bot.send_message(chat_id=update.message.from_user.id,
-                                 text="Дякуємо за звернення, менеджер вже приєднується до чату. Що саме бажаєте замовити?")
+                                         text=text)
                 context.user_data['CHAT'] = 'yes'
+                context.user_data['QUESTION'] = text
+            else:
+                context.user_data['QUESTION'] = ''
         else:
             context.bot.send_message(chat_id=update.message.from_user.id,
-                             text="Дякуємо за звернення, менеджер вже приєднується до чату. Що саме бажаєте замовити?")
+                                     text=text)
             context.user_data['CHAT'] = 'yes'
+            context.user_data['QUESTION'] = text
         return ANSWER_MENU
     if update.message.text == 'ЄПитання':
+        text = "Дякуємо за звернення, менеджер вже приєднується до чату. Напишіть, будь-ласка, питання."
         if 'CHAT' in context.user_data:
             if context.user_data['CHAT'] != 'yes':
                 context.bot.send_message(chat_id=update.message.from_user.id,
-                                 text="Дякуємо за звернення, менеджер вже приєднується до чату. Напишіть, будь-ласка, питання.")
+                                         text=text)
                 context.user_data['CHAT'] = 'yes'
+                context.user_data['QUESTION'] = text
+            else:
+                context.user_data['QUESTION'] = ''
         else:
             context.bot.send_message(chat_id=update.message.from_user.id,
-                             text="Дякуємо за звернення, менеджер вже приєднується до чату. Напишіть, будь-ласка, питання.")
+                                     text=text)
             context.user_data['CHAT'] = 'yes'
+            context.user_data['QUESTION'] = text
         return ANSWER_MENU
     if update.message.text == 'Потрібна консультація експерта з харчування':
+        text = "Дякуємо за звернення, поки менеджер приєднується до чату напишіть, будь-ласка, для кого бажаєте підібрати корм?"
         if 'CHAT' in context.user_data:
             if context.user_data['CHAT'] != 'yes':
                 context.bot.send_message(chat_id=update.message.from_user.id,
-                                 text="Дякуємо за звернення, поки менеджер приєднується до чату напишіть, будь-ласка, для кого бажаєте підібрати корм?")
+                                         text=text)
                 context.user_data['CHAT'] = 'yes'
+                context.user_data['QUESTION'] = text
+            else:
+                context.user_data['QUESTION'] = ''
         else:
             context.bot.send_message(chat_id=update.message.from_user.id,
-                             text="Дякуємо за звернення, поки менеджер приєднується до чату напишіть, будь-ласка, для кого бажаєте підібрати корм?")
+                                     text=text)
             context.user_data['CHAT'] = 'yes'
+            context.user_data['QUESTION'] = text
         return ANSWER_MENU
     else:
+        text = "Дякуємо за звернення! Будь ласка зачекайте, співробітник компанії підключиться до чату в найближчий час."
         if 'CHAT' in context.user_data:
             if context.user_data['CHAT'] != 'yes':
                 context.bot.send_message(chat_id=update.message.from_user.id,
-                                 text="Дякуємо за звернення! Будь ласка зачекайте, співробітник компанії підключиться до чату в найближчий час.")
+                                         text=text)
+                context.user_data['QUESTION'] = text
+            else:
+                context.user_data['QUESTION'] = ''
             context.user_data['CHAT'] = 'yes'
         else:
             context.bot.send_message(chat_id=update.message.from_user.id,
-                             text="Дякуємо за звернення, поки менеджер приєднується до чату напишіть, будь-ласка, для кого бажаєте підібрати корм?")
+                                     text=text)
             context.user_data['CHAT'] = 'yes'
+            context.user_data['QUESTION'] = text
         return ANSWER_MENU
