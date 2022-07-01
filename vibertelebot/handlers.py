@@ -53,6 +53,7 @@ def user_message_handler(viber, viber_request):
     reply_alt_text = ''
     reply_rich_media = {}
     tracking_data = json.loads(tracking_data)
+    tracking_data['QUESTION'] = ''
     if isinstance(message, ContactMessage):
         # Handling reply after user shared his contact infromation
         if message.contact.name:

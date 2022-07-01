@@ -45,7 +45,8 @@ def main(request):
             logger.info(type(previous_data))
             logger.info(previous_data)
             if 'QUESTION' in previous_data:
-                json_data['message']['text'] = f"БОТ: {previous_data['QUESTION']}\n\n{json_data['message']['text']}"
+                if previous_data['QUESTION']:
+                    json_data['message']['text'] = f"БОТ: {previous_data['QUESTION']}\n\n{json_data['message']['text']}"
     logger.info(json_data)
     # logger.info(viber_request.message)
     send_message_viber(json_data)
