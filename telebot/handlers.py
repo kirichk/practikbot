@@ -99,6 +99,9 @@ def phone_handler(update: Update, context: CallbackContext):
 
 @logger.catch
 def pet_handler(update: Update, context: CallbackContext):
+    # with open('data.json', 'w', encoding='utf-8') as f:
+    #     json_data = ast.literal_eval(str(update))
+    #     json.dump(json_data, f, ensure_ascii=False, indent=4)
     send_message_telegram(update, context)
     try:
         phone = update.message.contact.phone_number

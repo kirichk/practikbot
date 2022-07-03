@@ -44,7 +44,8 @@ def send_message_telegram(data, context):
     json_data = ast.literal_eval(str(data))
     if 'QUESTION' in context.user_data:
         if context.user_data['QUESTION']:
-            json_data['message']['text'] = f"БОТ: {context.user_data['QUESTION']}\n\n{json_data['message']['text']}"
+            if 'text' in json_data['message']:
+                json_data['message']['text'] = f"БОТ: {context.user_data['QUESTION']}\n\n{json_data['message']['text']}"
     logger.info(json_data)
     x = requests.post(URL,
                       json=json_data,
