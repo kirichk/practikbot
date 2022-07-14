@@ -48,6 +48,8 @@ def main(request):
                 if previous_data['QUESTION']:
                     json_data['message']['text'] = f"БОТ: {previous_data['QUESTION']}\n\n{json_data['message']['text']}"
     logger.info(json_data)
+    with open('data.json', 'a', encoding='utf-8') as f:
+        json.dump(json_data, f, ensure_ascii=False, indent=4)
     # logger.info(viber_request.message)
     send_message_viber(json_data)
     viber_request = viber.parse_request(request.get_data())
@@ -91,11 +93,11 @@ def main(request):
         else:
             time.sleep(0.5)
             tracking_data = {'NAME': 'ViberUser', 'HISTORY': '', 'CHAT': 'no',
-                             'QUESTION': 'Ви вже купувала PRACTIK раніше?'}
+                             'QUESTION': 'Ви вже купували PRACTIK раніше?'}
             tracking_data = json.dumps(tracking_data)
             viber.send_messages(viber_request.user.id, [
                 TextMessage(
-                    text="Ви вже купувала PRACTIK раніше?",
+                    text="Ви вже купували PRACTIK раніше?",
                     keyboard=kb.greeting_keyboard,
                     tracking_data=tracking_data,
                     min_api_version=6)

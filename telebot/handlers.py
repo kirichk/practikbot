@@ -67,7 +67,7 @@ def greetings_handler(update: Update, context: CallbackContext):
                             KeyboardButton("Ні"), ]
         reply_markup = ReplyKeyboardMarkup(keyboard=[contact_keyboard],
                                            resize_keyboard=True)
-        text = "Ви вже купувала PRACTIK раніше?"
+        text = "Ви вже купували PRACTIK раніше?"
         context.bot.send_message(chat_id=update.message.from_user.id,
                                  text=text,
                                  reply_markup=reply_markup)
